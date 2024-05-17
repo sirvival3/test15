@@ -1,4 +1,4 @@
-import { changePremium, changeUSername, getSession } from "@/actions/actions";
+import { changePremium, changeUSername, getSession } from "../actions/actions";
 import { redirect } from "next/navigation";
 
 export default async function Profile() {

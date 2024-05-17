@@ -1,4 +1,4 @@
-import { getSession } from "@/actions/actions";
+import { getSession } from "../actions/actions";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
