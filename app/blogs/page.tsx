@@ -8,11 +8,10 @@ export default async function Blogs() {
     redirect("/")
   }
 
-  if(!session.isPro){
+  if(session.isBlocked){
     return(
       <div className="notPremium">
-        <h1>Only premium users can see the content!</h1>
-        
+        <h1>Du er blevet blokeret!</h1>
       </div>
     )
   }

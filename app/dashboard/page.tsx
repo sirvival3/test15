@@ -8,6 +8,14 @@ export default async function Dashboard() {
     redirect("/")
   }
 
+  if(session.isBlocked){
+    return(
+      <div className="notPremium">
+        <h1>Du er blevet blokeret!</h1>
+      </div>
+    )
+  }
+
     return (
       <main className="p-4">
         <h1>Profil</h1>
