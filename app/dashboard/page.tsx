@@ -1,7 +1,7 @@
 import { changePremium, changeUSername, getSession } from "../actions/actions";
 import { redirect } from "next/navigation";
 
-export default async function Profile() {
+export default async function Dashboard() {
   const session = await getSession()
 
   if(!session.isLoggedIn){
@@ -10,18 +10,18 @@ export default async function Profile() {
 
     return (
       <main className="p-4">
-        <h1>Profile</h1>
+        <h1>Profil</h1>
         <p>
-          Welcome, <b>{session.username}</b>
+          Velkommen, <b>{session.username}</b>
         </p>
-        <span>You are a <b>{session.isPro ? "Premium" : "Free"} user</b></span>
-        <form action={changePremium}>
+        <span>Du er <b>{session.role}</b></span>
+        {/* <form action={changePremium}>
           <button>{session.isPro ? "Cancel" : "Buy"} Premium</button>     
-        </form>
-        <form action={changeUSername}>
+        </form> */}
+        {/* <form action={changeUSername}>
           <input type="text" name="username" required placeholder={session.username} />
           <button>Update</button>
-        </form>
+        </form> */}
       </main>
     );
   }

@@ -1,28 +1,26 @@
-import { getSession } from "../actions/actions";
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import { getSession } from "../actions/actions";
+import { getAssignmentList } from "../actions/assignmentsActions";
 
-export default async function Premium() {
+export default async function Assignments() {
   const session = await getSession()
+  const list = getAssignmentList()
 
   if(!session.isLoggedIn){
     redirect("/")
   }
 
-  if(!session.isPro){
+  if(session.isBlocked){
     return(
       <div className="notPremium">
-        <h1>Only premium users can see the content!</h1>
-        <Link href="/profile">
-          Go to the profile page to upgrade to premium
-        </Link>
+        <h1>Du er blevet blokeret!</h1>
       </div>
     )
   }
 
     return (
       <main className="p-4">
-        <h1>Premium</h1>
+        <h1>Assignments</h1>
         <p>Welcome</p>
         <ul>
           <li>Apple</li>

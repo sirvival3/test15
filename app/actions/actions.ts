@@ -4,10 +4,7 @@ import {sessionOptions, SessionData, defaultSession} from "@/lib/lib"
 import { getIronSession } from "iron-session"
 import { redirect } from 'next/navigation'
 import { cookies } from "next/headers"
-import { revalidatePath } from "next/cache"
-
-let isPro = true
-let isBlocked = true
+// import { revalidatePath } from "next/cache"
 
 export const getSession = async ()=>{
     const session = await getIronSession<SessionData>(cookies(), sessionOptions)
@@ -17,8 +14,7 @@ export const getSession = async ()=>{
     }
 
     // CHECH THE USER IN THE DB
-    session.isBlocked = isBlocked
-    session.isPro = isPro
+   
 
     return session
 }
@@ -41,20 +37,21 @@ export const login = async (prevState:{error:undefined | string},formData:FormDa
     });
     const data = await res.json()
 
-    // console.log("data from server:")
-    // console.log(data)
-
-    if(formUsername!==data.username){
-        return {error:"Wrong Credentials!"}
+    if(data.error){
+        return {error:data.error}
+    } else if(formUsername!==data.username){
+        return {error:"Forkert brugernavn eller koderord."}
     }
 
     session.userId = data.userid
+    session.token = data.token
     session.username = data.username
-    session.isPro = isPro
+    session.role = data.role
     session.isLoggedIn = true
+    session.isBlocked = data.is_blocked
 
     await session.save()
-    redirect("/")
+    redirect("/dashboard")
 }
 
 export const logout = async ()=>{
@@ -63,21 +60,21 @@ export const logout = async ()=>{
     redirect("/")
 }
 
-export const changePremium = async ()=>{
-    const session = await getSession()
+// export const changePremium = async ()=>{
+//     const session = await getSession()
 
-    isPro = !session.isPro
-    session.isPro = isPro
-    await session.save()
-    revalidatePath("/profile")
-}
+//     isPro = !session.isPro
+//     session.isPro = isPro
+//     await session.save()
+//     revalidatePath("/profile")
+// }
 
-export const changeUSername = async (formData:FormData)=>{
-    const session = await getSession()
+// export const changeUSername = async (formData:FormData)=>{
+//     const session = await getSession()
 
-    const newUsername = formData.get("username") as string
+//     const newUsername = formData.get("username") as string
 
-    session.username = newUsername
-    await session.save()
-    revalidatePath("/profile")
-}
+//     session.username = newUsername
+//     await session.save()
+//     revalidatePath("/profile")
+// }

@@ -2,9 +2,11 @@ import { SessionOptions } from "iron-session"
 
 export interface SessionData {
     userId?:string
+    token?:string
     username?:string
-    img?:string
-    isPro?:boolean
+    role?:string
+    // img?:string
+    // isPro?:boolean
     isLoggedIn:boolean
     isBlocked:boolean
 }
