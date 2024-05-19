@@ -4,6 +4,7 @@ import { getAssignmentList } from "../actions/assignmentsActions";
 import Link from "next/link";
 
 interface assignment {
+  id: number
   topic: string
   title: string
   deadline: string
