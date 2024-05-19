@@ -1,6 +1,6 @@
-import { redirect } from "next/dist/server/api-utils";
-import { getSession } from "../../actions/actions";
-import { getAssignment } from "../../actions/assignmentsActions";
+import { redirect } from "next/navigation"
+import { getSession } from "../../actions/actions"
+import { getAssignment } from "../../actions/assignmentsActions"
 
 interface assignment {
   topic: string
