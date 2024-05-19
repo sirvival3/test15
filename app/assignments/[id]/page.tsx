@@ -1,3 +1,4 @@
+// import { useState } from "react"
 import { redirect } from "next/navigation"
 import { getSession } from "../../actions/actions"
 import { getAssignment } from "../../actions/assignmentsActions"
@@ -9,23 +10,18 @@ interface assignment {
   deadline: string
 }
 
-export default async function AssignmentDetails({ params }:any) {
-  const id = params.id
+export default async function AssignmentDetails({ params }: any) {
   const session = await getSession()
-  const data: assignment = await getAssignment(params.id)
+  const id = params.id
+  const data: assignment = await getAssignment(id)
 
-  if(!session.isLoggedIn){
+  if (!session.isLoggedIn) {
     redirect("/")
   }
-
-  if(session.isBlocked){
-    return(
-      <div className="">
-        <h1>Du er blevet blokeret!</h1>
-      </div>
-    )
+  if (session.isBlocked) {
+    redirect("/isblocked")
   }
-  
+
   return (
     <div>
       <h1>Opgave {id}</h1>
