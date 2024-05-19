@@ -25,6 +25,8 @@ export default async function Blogs() {
           <li>Orange</li>
           <li>Peach</li>
         </ul>
+
+        
       </main>
     );
   }
