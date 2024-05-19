@@ -1,7 +1,11 @@
 // import { useState } from "react"
 import { redirect } from "next/navigation"
+
 import { getSession } from "../../actions/actions"
 import { getAssignment } from "../../actions/assignmentsActions"
+
+import Test from "./components/test"
+import TaskList from "./components/taskList"
 
 interface assignment {
   topic: string
@@ -29,6 +33,35 @@ export default async function AssignmentDetails({ params }: any) {
       <div>Titel: {data.title}</div>
       <div>Beskrivelse: {data.description}</div>
       <div>Deadline: {data.deadline}</div>
+      <Test />
+      <TaskList
+        data={[
+          {
+            body: "Hvad er 2 + 2?",
+            type: "math",
+            answer: "",
+            correct: ["4", "fire"],
+          },
+          {
+            body: "Hvad er 6 - 2?",
+            type: "math",
+            answer: "",
+            correct: ["4", "fire"],
+          },
+          {
+            body: "Hvad er 2 * 2?",
+            type: "math",
+            answer: "",
+            correct: ["4", "fire"],
+          },
+          {
+            body: "Hvad er 8 : 2?",
+            type: "math",
+            answer: "",
+            correct: ["4", "fire"],
+          },
+        ]}
+      />
     </div>
   )
 }
