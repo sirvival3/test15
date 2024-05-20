@@ -12,7 +12,7 @@ export default function Test() {
     }
   }, [])
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (typeof window !== "undefined" && window.localStorage) {
       localStorage.setItem("myvar", e.target.value)
     }
@@ -21,10 +21,7 @@ export default function Test() {
 
   return (
     <div>
-      <div>Test</div>
-      <form>
-        <input type='text' onChange={handleChange} value={myvar} />
-      </form>
+      <input type='text' onChange={handleChange} value={myvar} />
     </div>
   )
 }

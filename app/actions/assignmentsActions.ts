@@ -40,7 +40,7 @@ export const getAssignment = async (id: number) => {
   })
   const data = await res.json()
 
-  console.log(data)
+  // console.log(data)
 
   if (data.error) {
     return { error: data.error }

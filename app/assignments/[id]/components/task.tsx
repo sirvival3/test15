@@ -2,24 +2,34 @@
 
 import { useState } from "react"
 
-export default function Task({ data }: any) {
-  const [correct, setCorrect] = useState<string>("")
-  const [answer, setAnswer] = useState<string>("")
+interface taskProps {
+  data: any
+  answer: string
+  update: any
+}
 
-  const handleCheck = () => {
+export default function Task(props: taskProps) {
+  const [correct, setCorrect] = useState<string>("")
+  const data = props.data
+
+  const handleValidate = () => {
     let temp: boolean = false
 
     data.correct.forEach((str: string) => {
-      if (str === answer) temp = true
+      if (str === props.answer) temp = true
     })
 
     if (temp) setCorrect("true")
     else setCorrect("false")
   }
+  const updateAnswer = (e: React.ChangeEvent<HTMLInputElement>) => {
+    props.update(data.num, e.target.value)
+  }
 
   return (
     <div className='border-2 p-2 m-2'>
-      <div>{data.body}</div>
+      <div className='inline-block mr-4'>{data.num + 1}</div>
+      <div className='inline-block'>{data.body}</div>
 
       <div className='p-2'>
         {data.type && data.type === "math" && (
@@ -27,8 +37,8 @@ export default function Task({ data }: any) {
             type='text'
             className='border-2'
             placeholder='math'
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
+            defaultValue={props.answer}
+            onChange={updateAnswer}
           />
         )}
         {data.type && data.type === "text" && (
@@ -36,14 +46,17 @@ export default function Task({ data }: any) {
             type='text'
             className='border-2'
             placeholder='text'
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
+            defaultValue={props.answer}
+            onChange={updateAnswer}
           />
         )}
         {correct &&
           correct !== "" &&
           (correct === "true" ? <span>Rigtigt</span> : <span>Forkert</span>)}
-        <button className='border-2 ml-4 pl-4 pr-4' onClick={handleCheck}>
+        <button
+          className='border-2 ml-4 pl-4 pr-4 rounded-xl'
+          onClick={handleValidate}
+        >
           Tjek
         </button>
       </div>
