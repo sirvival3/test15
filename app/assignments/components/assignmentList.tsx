@@ -1,3 +1,4 @@
+import { logout } from "@/app/actions/actions"
 import { getAssignmentList } from "../../actions/assignmentsActions"
 import AssignmentItem from "./assignmentItem"
 
@@ -9,7 +10,8 @@ interface assignment {
 }
 
 export default async function AssignmentList() {
-  const list: assignment[] = await getAssignmentList()
+  const list: assignment[] | any = await getAssignmentList()
+  if (list && list.error) return <>{list.error}</>
 
   return (
     <>

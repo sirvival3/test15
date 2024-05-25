@@ -3,10 +3,11 @@ import { redirect } from "next/navigation"
 import { getSession } from "../../actions/actions"
 import { getAssignment } from "../../actions/assignmentsActions"
 
-import Test from "./components/test"
 import TaskList from "./components/taskList"
+import TaskProvider from "./components/taskContext"
 
-interface assignment {
+type assignment = {
+  id: number
   topic: string
   title: string
   description: string
@@ -16,8 +17,11 @@ interface assignment {
 
 export default async function AssignmentDetails({ params }: any) {
   const session = await getSession()
-  const id = params.id
-  const data: assignment = await getAssignment(id)
+  const data: assignment | any = await getAssignment(params.id)
+
+  // console.log(data)
+
+  if (data && data.error) return <>{data.error}</>
 
   if (!session.isLoggedIn) {
     redirect("/")
@@ -26,17 +30,47 @@ export default async function AssignmentDetails({ params }: any) {
     redirect("/isblocked")
   }
 
+  // console.log(
+  //   JSON.stringify([
+  //     {
+  //       body: "Hvad er 2 + 2?",
+  //       type: "math",
+  //       answer: { answer: "", validation: false, tries: 0 },
+  //       correct_answers: ["4", "fire"],
+  //     },
+  //     {
+  //       body: "Hvad er 6 - 2?",
+  //       type: "math",
+  //       answer: { answer: "", validation: false, tries: 0 },
+  //       correct_answers: ["4", "fire"],
+  //     },
+  //     {
+  //       body: "Hvad er 2 * 2?",
+  //       type: "math",
+  //       answer: { answer: "", validation: false, tries: 0 },
+  //       correct_answers: ["4", "fire"],
+  //     },
+  //     {
+  //       body: "Hvad er 8 : 2?",
+  //       type: "math",
+  //       answer: { answer: "", validation: false, tries: 0 },
+  //       correct_answers: ["4", "fire"],
+  //     },
+  //   ])
+  // )
+
   return (
     <div>
       <div className='border-2 m-2 p-2'>
-        <h1>Opgavesæt {id}</h1>
+        <h1>Opgavesæt {data.id}</h1>
         <div>Fag: {data.topic}</div>
         <div>Titel: {data.title}</div>
         <div>Beskrivelse: {data.description}</div>
         <div>Deadline: {data.deadline}</div>
       </div>
-      <Test />
-      <TaskList data={JSON.parse(data.tasks)} num={id} />
+      <TaskProvider>
+        <TaskList data={data} />
+      </TaskProvider>
     </div>
   )
 }

@@ -1,4 +1,5 @@
-import { getSession } from "./actions"
+import { redirect } from "next/navigation"
+import { getSession, logout } from "./actions"
 
 export const getAssignmentList = async () => {
   const session = await getSession()
@@ -14,11 +15,14 @@ export const getAssignmentList = async () => {
     }),
   })
   const data = await res.json()
+  if (data && data.error && data.error.substring(0, 6) === "logout") {
+    redirect("/login")
+  }
 
   // console.log(data)
-
-  if (data.error) {
-    return { error: data.error }
+  if (data && data.error) {
+    throw new Error(data.error)
+    // return { error: data.error }
   }
 
   return data
@@ -39,11 +43,14 @@ export const getAssignment = async (id: number) => {
     }),
   })
   const data = await res.json()
+  if (data && data.error && data.error.substring(0, 6) === "logout") {
+    redirect("/login")
+  }
 
   // console.log(data)
-
-  if (data.error) {
-    return { error: data.error }
+  if (data && data.error) {
+    throw new Error(data.error)
+    // return { error: data.error }
   }
 
   return data

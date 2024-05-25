@@ -1,54 +1,58 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import Task from "./task"
+import { useTaskContext } from "./taskContext"
 
 interface tasklistProps {
   data: any
-  num: number
 }
 
 export default function TaskList(props: tasklistProps) {
-  const [answers, setAnswers] = useState<any>([])
-
+  const { tasks, InitTasks } = useTaskContext()
+  // console.log(props.data)
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
-      let savedValue: string =
-        window.localStorage.getItem("answers" + props.num) || "[]"
-      setAnswers(JSON.parse(savedValue))
-    }
-  }, [])
+      // console.log(props.data.tasks)
+      // setTasks(JSON.parse(props.data.tasks))
 
-  const updateAnswer = (id: number, answer: string) => {
-    let temp = answers
-    temp[id] = answer
-    if (typeof window !== "undefined" && window.localStorage) {
-      localStorage.setItem("answers" + props.num, JSON.stringify(temp))
-    }
-    setAnswers(temp)
-  }
+      let savedValue: string | null = window.localStorage.getItem(
+        "xxx" + props.data.id
+      )
+      // if (savedValue) console.log(savedValue)
+      // if(savedValue)
 
-  const handleFinish = () => {
-    // console.log("finish")
-    console.log(answers)
+      if (savedValue) InitTasks(props.data.id, JSON.parse(savedValue))
+      else InitTasks(props.data.id, JSON.parse(props.data.tasks))
+      // // let savedValue: string = window.localStorage.getItem(storageName) || "[]"
+      // let savedValue: string =
+      //   window.localStorage.getItem(storageName) ||
+      //   JSON.stringify(
+      //     tasks.map(() => {
+      //       return ""
+      //     })
+      //   )
+      // setAnswers(JSON.parse(savedValue))
+    }
+  }, [props.data])
+
+  //   if (typeof window !== "undefined" && window.localStorage) {
+  //     localStorage.setItem(storageName, JSON.stringify(temp))
+  //   }
+
+  const handleSubmit = () => {
+    console.log("Submit")
   }
 
   return (
     <div>
-      {props.data.map((item: any, index: number) => {
-        item.num = index
-        return (
-          <Task
-            key={index}
-            data={item}
-            answer={answers[index] ? answers[index] : ""}
-            update={updateAnswer}
-          />
-        )
+      {tasks.map((item: any, index: number) => {
+        item.id = index
+        return <Task key={index} id={index} />
       })}
       <button
         className='border-2 m-2 pl-2 pr-2 rounded-xl'
-        onClick={handleFinish}
+        onClick={handleSubmit}
       >
         Aflever
       </button>
